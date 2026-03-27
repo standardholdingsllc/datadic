@@ -81,10 +81,17 @@ export default function Home() {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      const timestamp = new Date().toISOString().slice(0, 10);
-      a.download = inputMode === 'paste' 
-        ? `ncga_converted_${timestamp}.csv`
-        : file.name.replace(/\.(xlsx|xls|csv)$/i, '_converted.csv');
+      
+      // Get client name from response header for paste mode
+      let downloadName;
+      if (inputMode === 'paste') {
+        const clientName = response.headers.get('X-Client-Name');
+        downloadName = clientName ? `${clientName}.csv` : 'converted.csv';
+      } else {
+        downloadName = file.name.replace(/\.(xlsx|xls|csv)$/i, '_converted.csv');
+      }
+      a.download = downloadName;
+      
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);

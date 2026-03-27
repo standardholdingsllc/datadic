@@ -170,6 +170,13 @@ export async function POST(request) {
       );
     }
 
+    // Extract client name from first row for filename
+    const clientName = parsedData[0]['Client Name'] || 'converted';
+    const safeClientName = clientName
+      .replace(/[^a-zA-Z0-9\s\-_.]/g, '')
+      .replace(/\s+/g, '_')
+      .substring(0, 50);
+
     const transformedData = transformData(parsedData);
     const csvContent = arrayToCSV(transformedData);
 
@@ -177,7 +184,8 @@ export async function POST(request) {
       status: 200,
       headers: {
         'Content-Type': 'text/csv',
-        'Content-Disposition': 'attachment; filename="converted.csv"'
+        'Content-Disposition': `attachment; filename="${safeClientName}.csv"`,
+        'X-Client-Name': safeClientName
       }
     });
 
