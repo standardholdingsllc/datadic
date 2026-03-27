@@ -27,7 +27,7 @@ body {
   border-radius: 20px;
   padding: 3rem;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
-  max-width: 500px;
+  max-width: 600px;
   width: 100%;
   text-align: center;
 }
@@ -177,4 +177,91 @@ body {
   font-size: 0.85rem;
   color: #666;
   line-height: 1.6;
+}
+
+/* Mode Toggle */
+.mode-toggle {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid #0f3460;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: white;
+  color: #0f3460;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-btn:first-child {
+  border-right: 1px solid #0f3460;
+}
+
+.mode-btn:hover:not(.active) {
+  background: #f0f4ff;
+}
+
+.mode-btn.active {
+  background: #0f3460;
+  color: white;
+}
+
+/* Paste Section */
+.paste-section {
+  margin-bottom: 1.5rem;
+}
+
+.paste-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.paste-label {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+  text-align: left;
+}
+
+.paste-textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+  background: #fafafa;
+}
+
+.paste-textarea:focus {
+  outline: none;
+  border-color: #0f3460;
+  background: white;
+}
+
+.paste-textarea::placeholder {
+  color: #aaa;
+  font-family: inherit;
+}
+
+.paste-hint {
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  color: #888;
+  text-align: left;
+  line-height: 1.5;
 }
