@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Griffin Data Converter',
+  title: 'NCGA Data Converter',
   description: 'Convert worker data files to the required format',
 }
 
