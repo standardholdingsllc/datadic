@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import * as XLSX from 'xlsx';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 function cleanPhoneNumber(phone) {
   if (!phone) return '';
   return String(phone).replace(/[^\d\s]/g, '').trim();
