@@ -9,9 +9,25 @@ const EXPECTED_HEADERS = [
   'Phone', 'Phone2', 'Email', 'Passport', 'DOB', 'Status In', 'Needs Y-E', 'Recr. ID'
 ];
 
-function cleanPhoneNumber(phone) {
-  if (!phone) return '';
-  return String(phone).replace(/[^\d\s]/g, '').trim();
+function processPhoneNumber(phone) {
+  if (!phone) return { phone: '', countryCode: 52 };
+  
+  // Remove all non-digit characters
+  const digitsOnly = String(phone).replace(/\D/g, '');
+  
+  // If 11 digits and starts with 1, it's a US number
+  if (digitsOnly.length === 11 && digitsOnly.startsWith('1')) {
+    return {
+      phone: digitsOnly.substring(1), // Remove the leading 1
+      countryCode: 1 // US country code
+    };
+  }
+  
+  // Otherwise it's a Mexican number
+  return {
+    phone: digitsOnly,
+    countryCode: 52
+  };
 }
 
 function formatDOB(dob) {
@@ -93,7 +109,7 @@ function transformData(inputData) {
     const fullLastName = lastName2 ? `${lastName} ${lastName2}` : lastName;
     
     const rawPhone = row['Phone'] || row['Phone2'] || '';
-    const cleanedPhone = cleanPhoneNumber(rawPhone);
+    const { phone, countryCode } = processPhoneNumber(rawPhone);
     
     const rawDOB = row['DOB'] || '';
     
@@ -103,8 +119,8 @@ function transformData(inputData) {
       last_name: fullLastName,
       email: row['Email'] || '',
       dob: formatDOB(rawDOB),
-      phone_country_code: 52,
-      phone: cleanedPhone,
+      phone_country_code: countryCode,
+      phone: phone,
       nationality: 'MX',
       passport_number: row['Passport'] || '',
       occupation: 'FarmerFishermanForester',
