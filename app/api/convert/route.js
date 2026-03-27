@@ -9,6 +9,36 @@ function cleanPhoneNumber(phone) {
   return String(phone).replace(/[^\d\s]/g, '').trim();
 }
 
+function formatDOB(dob) {
+  if (!dob) return '';
+  
+  // If it's already a string in YYYY-MM-DD format, return as-is
+  if (typeof dob === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dob)) {
+    return dob;
+  }
+  
+  // If it's an Excel serial date number, convert it
+  if (typeof dob === 'number') {
+    const excelEpoch = new Date(1899, 11, 30);
+    const date = new Date(excelEpoch.getTime() + dob * 86400000);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  
+  // Try to parse as date string
+  const parsed = new Date(dob);
+  if (!isNaN(parsed.getTime())) {
+    const year = parsed.getFullYear();
+    const month = String(parsed.getMonth() + 1).padStart(2, '0');
+    const day = String(parsed.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  
+  return String(dob);
+}
+
 function transformData(inputData) {
   return inputData.map(row => {
     const firstName = row['First Name'] || '';
@@ -20,12 +50,14 @@ function transformData(inputData) {
     const rawPhone = row['Phone'] || row['Phone1'] || '';
     const cleanedPhone = cleanPhoneNumber(rawPhone);
     
+    const rawDOB = row['DOB'] || row['dob'] || row['Date of Birth'] || '';
+    
     return {
       identification_number: '',
       first_name: firstName,
       last_name: fullLastName,
       email: row['Email'] || '',
-      dob: '',
+      dob: formatDOB(rawDOB),
       phone_country_code: 52,
       phone: cleanedPhone,
       nationality: 'MX',
